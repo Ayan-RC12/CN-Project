@@ -1,20 +1,23 @@
 // MQTT Subscriber
 const mqtt = require('mqtt');
 let client = mqtt.connect('mqtt://localhost:1883')
-// let topic = 'PROJECT';
+
 const topicHeartBeat = "device-heartbeat";
 const topicDeviceData = "device-data";
+var clc = require("cli-color");
+
 
 client.on('message', (TOPIC, message) => {
 
     if(TOPIC==topicHeartBeat ){
-        client.publish('device-configuration','this is a test message');
+        client.publish('device-configuration','device configuration meta data');
         message = message.toString()
-        console.log(message)
+        console.log(message);
+        
     }
     if(TOPIC==topicDeviceData ){ 
         message = message.toString()
-        console.log(message)
+        console.log(clc.green(message))
     }
 })
 

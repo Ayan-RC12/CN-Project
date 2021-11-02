@@ -4,16 +4,13 @@ const client = mqtt.connect("mqtt://localhost:1883");
 const topicHeartBeat = "device-heartbeat";
 const topicConfiguration = "device-configuration";
 const topicDeviceData = "device-data";
+var clc = require("cli-color");
 const file3 = require("./data");
 const message =require('./data2');
 // On boot run Publisher, send device up information
 async function OnHeartBeat() {
   try {
-    // const message = {
-    //   device: "123456",
-    //   commStatus: true,
-    //   commDate: new Date(),
-    // };
+    
     client.on("connect", () => {
       console.log("Device is on !", message);
       client.publish(topicHeartBeat, JSON.stringify(message,null,2), { retain: true });
@@ -22,9 +19,9 @@ async function OnHeartBeat() {
     throw err;
   }
 }
-// console.log(file3);
 
-// subscriber, for getting the device configs
+// subscriber, for getting the device configs  
+
 async function OnDeviceConfiguration() {
   try {
     client.on("connect", () => {
@@ -46,13 +43,13 @@ receiver = () => {
     if (TOPIC == "device-configuration") {
       //receive file 2 as message
       console.log("file 2 received");
-      console.log("sending data to clien!!!!!");
+      console.log(clc.red("sending data to client!!!!!"));
 
       setInterval(() => {
         client.publish(topicDeviceData, JSON.stringify(file3,null,2), {
           retain: true,
         });
-        console.log("sending file 3 to the client!");
+        console.log(clc.blue("sending data to the Subscriber!"));
       }, 2000);
     }
   });
